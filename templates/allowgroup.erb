@@ -1,0 +1,4 @@
+Match group <%= @name %>
+  ChrootDirectory /var/chroot/<%= @name %>
+  AllowTcpForwarding <%= @allowtcp %>
+  ForceCommand internal-sftp

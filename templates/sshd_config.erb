@@ -1,0 +1,27 @@
+# This file is being managed by puppet; any manual changes to this file will
+# be overwritten.
+Protocol 2
+SyslogFacility <%= @syslog_facility %>
+PasswordAuthentication no
+GSSAPIAuthentication yes
+X11Forwarding <%= @permit_x11_forwarding ? 'yes' : 'no' %>
+Subsystem sftp internal-sftp
+LoginGraceTime 60
+StrictModes yes
+IgnoreRhosts yes
+LogLevel INFO
+PermitEmptyPasswords no
+PubkeyAuthentication yes
+PrintMotd <%= @print_motd ? 'yes' : 'no' %>
+MaxStartups 50
+HostbasedAuthentication no
+PermitRootLogin <%= @permit_root_login_string %>
+<% if @permit_root_login -%>
+AllowGroups wheel
+<% end -%>
+<% case @kernel -%>
+<% when 'Linux' -%>
+<%= scope.function_template(['ssh/_linux_config.erb']) -%>
+<% when 'SunOS' -%>
+<%= scope.function_template(['ssh/_solaris_config.erb']) -%>
+<% end -%>
