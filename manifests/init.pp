@@ -1,28 +1,12 @@
-# Class: ssh
+# Installs and manages an SSH client
 #
-# This class installs and manages SSH
-#
-# Parameters:
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
+# Requires Chocolatey or Cygwin on Windows.
 class ssh {
-
   include ssh::params
 
-  $client_package  = $ssh::params::client_package
-  $ssh_config      = $ssh::params::ssh_config
-  $sshd_config     = $ssh::params::sshd_config
-  $ssh_service     = $ssh::params::ssh_service
-  $syslog_facility = $ssh::params::syslog_facility
-
-  if $::kernel == 'Linux' or $::kernel == 'SunOS' {
-    package { $client_package:
-      ensure => latest,
-    }
+  if $ssh::params::client_package {
+    ensure_packages([$ssh::params::client_package], {
+      provider => $ssh::params::package_provider,
+    })
   }
 }

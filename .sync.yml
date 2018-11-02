@@ -1,0 +1,6 @@
+---
+spec/default_facts.yml:
+  extra_facts:
+    windows_env:
+      PROGRAMDATA: 'C:\ProgramData'
+      WINDIR: 'C:\Windows'

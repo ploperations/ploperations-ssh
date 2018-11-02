@@ -1,0 +1,47 @@
+<%- |
+  Array[String]       $accept_env,
+  String[1]           $authorized_keys,
+  Optional[String[1]] $kex_algorithm,
+  Boolean             $permit_root_login,
+  Boolean             $permit_x11_forwarding,
+  Boolean             $print_motd,
+  String[1]           $root_group,
+  String[1]           $sftp_subsystem,
+  Boolean             $strict_modes,
+  String[1]           $syslog_facility,
+| -%>
+# This file is being managed by puppet; any manual changes to this file will
+# be overwritten.
+AuthorizedKeysFile <%= $authorized_keys %>
+GSSAPIAuthentication yes
+HostbasedAuthentication no
+IgnoreRhosts yes
+LoginGraceTime 60
+LogLevel INFO
+MaxStartups 50
+PasswordAuthentication no
+PermitEmptyPasswords no
+PrintMotd <%= ssh::yesno($print_motd) %>
+Protocol 2
+PubkeyAuthentication yes
+StrictModes <%= ssh::yesno($strict_modes) %>
+Subsystem sftp <%= $sftp_subsystem %>
+SyslogFacility <%= $syslog_facility %>
+X11Forwarding <%= ssh::yesno($permit_x11_forwarding) %>
+
+<%- if $kex_algorithm { -%>
+KexAlgorithms <%= $kex_algorithm %>
+<% } -%>
+
+<%- if $facts['kernel'] != 'SunOS' { -%>
+UseDNS no
+
+<%- if $accept_env { -%>
+AcceptEnv <%= $accept_env.join(' ') %>
+<% } -%>
+<% } -%>
+
+PermitRootLogin <%= ssh::yesno($permit_root_login) %>
+<% if $permit_root_login { -%>
+AllowGroups <%= $root_group %>
+<% } -%>
