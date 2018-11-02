@@ -1,0 +1,10 @@
+<%- |
+  String[1] $group,
+  Boolean   $tcp_forwarding,
+  String[1] $force_command,
+| -%>
+
+Match group <%= $group %>
+  ChrootDirectory /var/chroot/<%= $group %>
+  AllowTcpForwarding <%= ssh::yesno($tcp_forwarding) %>
+  ForceCommand <%= $force_command %>

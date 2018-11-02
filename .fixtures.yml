@@ -1,6 +1,9 @@
 ---
 fixtures:
   forge_modules:
-    augeas_core: "puppetlabs/augeas_core"
+    acl: "puppetlabs/acl"
+    chocolatey: "puppetlabs/chocolatey"
     concat: "puppetlabs/concat"
+    cygwin: "mdelaney/cygwin"
+    registry: "puppetlabs/registry"
     stdlib: "puppetlabs/stdlib"
