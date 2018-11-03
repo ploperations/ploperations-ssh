@@ -8,11 +8,13 @@ class ssh::server (
 ) inherits ssh::params {
   include ssh
 
-  if $::kernel == 'Linux' and ! defined(Package[$server_package]) {
-    package { $server_package:
+  if $facts['kernel'] == 'Linux' {
+    ensure_packages([$ssh::params::server_package], {
       ensure => latest,
-      notify => Service['sshd'],
-    }
+    })
+
+    Package[$ssh::params::server_package] -> Concat[$ssh::params::sshd_config]
+    Package[$ssh::params::server_package] ~> Service['sshd']
   }
 
   $permit_root_login_string = $permit_root_login ? {
@@ -21,17 +23,13 @@ class ssh::server (
     false     => 'no',
   }
 
-  concat { $sshd_config:
-    mode    => '0640',
-    require => $facts['kernel'] ? {
-      'Linux'   => Package[$server_package],
-      default   => undef,
-    },
-    notify  => Service['sshd'],
+  concat { $ssh::params::sshd_config:
+    mode   => '0640',
+    notify => Service['sshd'],
   }
   concat::fragment { 'sshd_config-header':
     order   => '00',
-    target  => $sshd_config,
+    target  => $ssh::params::sshd_config,
     content => template('ssh/sshd_config.erb'),
   }
 
@@ -39,30 +37,27 @@ class ssh::server (
   if $facts['os']['name'] == 'Debian' {
     concat::fragment { 'sshd_config-kexalgorithms':
       order   => '40',
-      target  => $sshd_config,
+      target  => $ssh::params::sshd_config,
       content => template('ssh/kexalgorithms.erb'),
     }
   }
 
   service { 'sshd':
     ensure     => running,
-    name       => $ssh_service,
+    name       => $ssh::params::ssh_service,
     enable     => true,
     hasstatus  => true,
-    hasrestart => $facts['kernel'] ? {
-      'Darwin' => false,
-      default  => true,
-    },
+    hasrestart => $facts['kernel'] != 'Darwin',
   }
 
-  file { $ssh_dir:
+  file { $ssh::params::ssh_dir:
     ensure => directory,
     owner  => 'root',
     group  => '0',
     mode   => '0755',
   }
 
-  file { $known_hosts:
+  file { $ssh::params::known_hosts:
     ensure => file,
     owner  => 'root',
     group  => '0',

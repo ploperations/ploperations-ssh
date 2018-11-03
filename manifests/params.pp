@@ -54,6 +54,9 @@ class ssh::params {
           $ssh_service     = 'network/ssh'
           $syslog_facility = 'AUTH'
         }
+        default: {
+          fail("module ssh does not support Solaris ${facts['kernelrelease']}")
+        }
       }
 
       $print_motd = false

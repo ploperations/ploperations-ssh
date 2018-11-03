@@ -12,33 +12,26 @@
 #
 class ssh {
 
-  include ::ssh::params
+  include ssh::params
 
-  $client_package  = $::ssh::params::client_package
-  $ssh_config      = $::ssh::params::ssh_config
-  $sshd_config     = $::ssh::params::sshd_config
-  $ssh_service     = $::ssh::params::ssh_service
-  $syslog_facility = $::ssh::params::syslog_facility
+  $client_package  = $ssh::params::client_package
+  $ssh_config      = $ssh::params::ssh_config
+  $sshd_config     = $ssh::params::sshd_config
+  $ssh_service     = $ssh::params::ssh_service
+  $syslog_facility = $ssh::params::syslog_facility
 
   if $::kernel == 'Linux' or $::kernel == 'SunOS' {
     package { $client_package:
       ensure => latest,
+      before => File[$ssh_config],
     }
   }
 
   file { $ssh_config:
-    ensure    => file,
-    owner     => root,
-    group     => 0,
-    mode      => '0644',
-    require   => $::kernel ? {
-      'Darwin'  => undef,
-      'freebsd' => undef,
-      'openbsd' => undef,
-      'solaris' => undef,
-      'SunOS'   => undef,
-      default   => Package[$client_package],
-    }
+    ensure => file,
+    owner  => 'root',
+    group  => '0',
+    mode   => '0644',
   }
 
   # Disable UseRoaming - per bugs CVE-2016-0777 and CVE-2016-0778
