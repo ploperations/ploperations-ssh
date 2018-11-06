@@ -27,8 +27,8 @@ define ssh::key (
     user    => $user,
     creates => $key_path,
   }
-  ~>
-  exec { "echo ${escaped_fact_name}=\$(cat ${key_path}.pub) >${escaped_fact_path}":
+
+  ~> exec { "echo ${escaped_fact_name}=\$(cat ${key_path}.pub) >${escaped_fact_path}":
     path    => '/usr/local/bin:/usr/bin:/bin',
     creates => "/opt/puppetlabs/facter/facts.d/${fact_name}.txt",
   }

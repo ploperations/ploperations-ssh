@@ -31,6 +31,8 @@ class ssh::params {
       $print_motd      = false
     }
     'Darwin': {
+      $client_package  = undef
+      $server_package  = undef
       $ssh_service     = 'com.openssh.sshd'
       $syslog_facility = 'AUTHPRIV'
       $print_motd      = true
@@ -53,6 +55,9 @@ class ssh::params {
           $server_package  = 'service/network/ssh'
           $ssh_service     = 'network/ssh'
           $syslog_facility = 'AUTH'
+        }
+        default: {
+          fail("module ssh does not support Solaris ${facts['kernelrelease']}")
         }
       }
 
