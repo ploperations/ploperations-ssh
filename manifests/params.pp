@@ -31,6 +31,8 @@ class ssh::params {
       $print_motd      = false
     }
     'Darwin': {
+      $client_package  = undef
+      $server_package  = undef
       $ssh_service     = 'com.openssh.sshd'
       $syslog_facility = 'AUTHPRIV'
       $print_motd      = true
