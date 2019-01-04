@@ -23,23 +23,6 @@ class ssh {
   if $::kernel == 'Linux' or $::kernel == 'SunOS' {
     package { $client_package:
       ensure => latest,
-      before => File[$ssh_config],
     }
-  }
-
-  file { $ssh_config:
-    ensure => file,
-    owner  => 'root',
-    group  => '0',
-    mode   => '0644',
-  }
-
-  # Disable UseRoaming - per bugs CVE-2016-0777 and CVE-2016-0778
-  augeas { 'ssh_config':
-    changes => [
-      "set /files/${ssh_config}/Host *",
-      "rm /files/${ssh_config}/Host/UseRoaming no",
-    ],
-    require => File[$ssh_config],
   }
 }
