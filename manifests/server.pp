@@ -12,10 +12,8 @@ class ssh::server (
 ) inherits ssh::params {
   include ssh
 
-  if $facts['kernel'] == 'windows' {
-    class { 'ssh::server::windows':
-      cyg_server_password => $cyg_server_password,
-    }
+  if $ssh::params::server_class {
+    include $ssh::params::server_class
   }
 
   if $ssh::params::server_package {
@@ -75,21 +73,6 @@ class ssh::server (
     order   => '00',
     target  => 'ssh::params::sshd_config',
     content => ssh::fix_eol("${sshd_configuration}\n"),
-  }
-
-  $os_config = $facts['kernel'] ? {
-    'Linux' => file('ssh/sshd_linux'),
-    'SunOS' => file('ssh/sshd_solaris'),
-    default => undef,
-  }
-
-  if $os_config {
-    # Add a trailing newline for legibility.
-    concat::fragment { 'ssh::params::sshd_config os_config':
-      order   => '20',
-      target  => 'ssh::params::sshd_config',
-      content => ssh::fix_eol("${os_config}\n"),
-    }
   }
 
   service { 'sshd':

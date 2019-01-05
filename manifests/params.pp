@@ -5,6 +5,7 @@
 class ssh::params {
   case $facts['os']['name'] {
     'CentOS', 'RedHat', 'Fedora': {
+      $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh-clients'
       $server_package    = 'openssh-server'
       $package_provider  = undef # Use default
@@ -24,6 +25,7 @@ class ssh::params {
       $dos_line_endings  = false
     }
     'SLES': {
+      $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh'
       $server_package    = 'openssh'
       $package_provider  = undef # Use default
@@ -43,6 +45,7 @@ class ssh::params {
       $dos_line_endings  = false
     }
     'CumulusLinux', 'Debian', 'Ubuntu': {
+      $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh-client'
       $server_package    = 'openssh-server'
       $package_provider  = undef # Use default
@@ -62,6 +65,7 @@ class ssh::params {
       $dos_line_endings  = false
     }
     'Darwin': {
+      $server_class      = undef
       $client_package    = undef
       $server_package    = undef
       $package_provider  = undef # Use default
@@ -81,6 +85,7 @@ class ssh::params {
       $dos_line_endings  = false
     }
     'FreeBSD': {
+      $server_class      = undef
       $package_provider  = undef # Use default
       $ssh_service       = 'sshd'
       $has_restart       = true
@@ -114,6 +119,7 @@ class ssh::params {
         }
       }
 
+      $server_class      = 'ssh::server::solaris'
       $package_provider  = undef # Use default
       $has_restart       = true
       $config_dir        = '/etc/ssh'
@@ -130,43 +136,46 @@ class ssh::params {
       $dos_line_endings  = false
     }
     'windows': {
+      $_programdata = $facts.dig('windows_env', 'PROGRAMDATA')
+      $_windir = $facts.dig('windows_env', 'WINDIR')
+
       if $facts['cygwin_home'] =~ String[1] {
         # Use Cygwin openssh
+        $server_class      = 'ssh::server::cygwin'
         $package_provider  = 'cygwin'
         $config_dir        = cygwin::windows_path('/etc')
         $manage_config_dir = false
         $sftp_subsystem    = '/usr/bin/sftp-server'
-        $authorized_keys   = '/etc/user_authorized_keys/%u'
+        $authorized_keys   = '.ssh/authorized_keys'
         $strict_modes      = false # I couldn't figure these out
         $dos_line_endings  = false
       } else {
         # Use native openssh
-        $_programdata = $facts.dig('windows_env', 'PROGRAMDATA')
+        $server_class        = 'ssh::server::chocolatey'
+        $package_provider    = 'chocolatey'
+        $config_dir          = "${_programdata}\\ssh"
+        $manage_config_dir   = true
+        $sftp_subsystem      = 'sftp-server.exe'
+        $authorized_keys     = "${config_dir}\\user_authorized_keys\\%u"
+        $strict_modes        = true
+        $dos_line_endings    = true
 
-        $package_provider  = 'chocolatey'
-        $config_dir        = "${_programdata}\\ssh"
-        $manage_config_dir = true
-        $sftp_subsystem    = 'sftp-server.exe'
-        $authorized_keys   = "${config_dir}\\user_authorized_keys\\%u"
-        $strict_modes      = true
-        $dos_line_endings  = true
+        # Settings special to this platform
+        $default_shell       = "${_windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+        $authorized_keys_dir = "${config_dir}\\user_authorized_keys"
       }
 
-      $client_package      = 'openssh'
-      $server_package      = $client_package
-      $ssh_service         = 'sshd'
-      $has_restart         = false
-      $config_owner        = 'Administrator'
-      $config_group        = 'Administrators'
-      $root_access_group   = 'Administrators'
-      $syslog_facility     = 'AUTH'
-      $print_motd          = true
-      $permit_root_login   = true
-      $authorized_keys_dir = "${config_dir}\\user_authorized_keys"
+      $client_package    = 'openssh'
+      $server_package    = $client_package
+      $ssh_service       = 'sshd'
+      $has_restart       = false
+      $config_owner      = 'Administrator'
+      $config_group      = 'Administrators'
+      $root_access_group = 'Administrators'
+      $syslog_facility   = 'AUTH'
+      $print_motd        = true
+      $permit_root_login = true
 
-      # Only used for ssh::server::windows::chocolatey
-      $windir = $facts.dig('windows_env', 'WINDIR')
-      $default_shell = "${windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
     }
     default: {
       fail("module ssh does not support OS ${facts['os']['name']}")

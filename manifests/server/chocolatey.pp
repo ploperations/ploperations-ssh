@@ -1,5 +1,5 @@
-# Configuration for native OpenSSH
-class ssh::server::windows::chocolatey (
+# Windows native OpenSSH server
+class ssh::server::chocolatey (
   Enum[present, absent] $default_shell_ensure         = present,
   Stdlib::Absolutepath  $default_shell                = $ssh::params::default_shell,
   String                $default_shell_command_option = '/c',
@@ -25,5 +25,20 @@ class ssh::server::windows::chocolatey (
     'HKLM:\SOFTWARE\OpenSSH\DefaultShellCommandOption':
       data => $default_shell_command_option,
     ;
+  }
+
+  file { $ssh::params::authorized_keys_dir:
+    ensure => directory,
+    owner  => 'Administrators',
+    group  => 'NT AUTHORITY\SYSTEM',
+  }
+
+  acl { $ssh::params::authorized_keys_dir:
+    purge                      => true,
+    inherit_parent_permissions => false,
+    permissions                => [
+      {'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full']},
+      {'identity' => 'Administrators', 'rights' => ['full']},
+    ],
   }
 }

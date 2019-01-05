@@ -1,10 +1,10 @@
-# SSH daemon configuration specific to Cygwin
-class ssh::server::windows::cygwin (
-  Sensitive[String[1]] $cyg_server_password,
-) {
+# Cygwin OpenSSH server
+class ssh::server::cygwin {
+  include ssh::server
+
   user { 'cyg_server':
     comment  => 'Privilege separation for Cygwin sshd',
-    password => $cyg_server_password,
+    password => $ssh::server::cyg_server_password,
   }
 
   $windir = $facts.dig('windows_env', 'WINDIR')
@@ -16,16 +16,16 @@ class ssh::server::windows::cygwin (
     "${facts['choco_install_path']}\\bin",
   ]
 
-  $password = $cyg_server_password.unwrap()
+  $password = $ssh::server::cyg_server_password.unwrap()
   $script = cygwin::windows_path('/bin/ssh-host-config')
   exec { "bash.exe ${script} --yes --pwd %CYGPASSWORD%":
-    path      => $exec_path,
+    path        => $exec_path,
     environment => [
       "CYGPASSWORD=${password}",
     ],
-    logoutput => true,
-    creates   => cygwin::windows_path('/etc/ssh_host_rsa_key'),
-    require   => [Package['openssh'], User['cyg_server']],
-    notify    => Service['sshd'],
+    logoutput   => true,
+    creates     => cygwin::windows_path('/etc/ssh_host_rsa_key'),
+    require     => [Package['openssh'], User['cyg_server']],
+    notify      => Service['sshd'],
   }
 }
