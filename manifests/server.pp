@@ -9,6 +9,7 @@ class ssh::server (
   Optional[String[1]]            $kex_algorithm         = undef,
   Ssh::PermitRootLogin           $permit_root_login     = $ssh::params::permit_root_login,
   Optional[Sensitive[String[1]]] $cyg_server_password   = undef,
+  Optional[String[3]]            $config_mode           = $ssh::params::config_mode,
 ) inherits ssh::params {
   include ssh
 
@@ -50,7 +51,7 @@ class ssh::server (
     path           => $ssh::params::sshd_config,
     owner          => $ssh::params::config_owner,
     group          => $ssh::params::config_group,
-    mode           => '0640',
+    mode           => $config_mode,
     ensure_newline => false, # might want CRLF instead of LF
     notify         => Service['sshd'],
   }

@@ -2,7 +2,9 @@
 #
 # Sets varables for the SSH class
 #
-class ssh::params {
+class ssh::params (
+  Boolean $cygwin = lookup('cygwin::enable', Boolean, undef, false),
+) {
   case $facts['os']['name'] {
     'CentOS', 'RedHat', 'Fedora': {
       $server_class      = 'ssh::server::linux'
@@ -14,6 +16,7 @@ class ssh::params {
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
       $config_group      = '0'
+      $config_mode       = '0644'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -34,6 +37,7 @@ class ssh::params {
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
       $config_group      = '0'
+      $config_mode       = '0644'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -54,6 +58,7 @@ class ssh::params {
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
       $config_group      = '0'
+      $config_mode       = '0644'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -74,6 +79,7 @@ class ssh::params {
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
       $config_group      = '0'
+      $config_mode       = '0644'
       $root_access_group = 'wheel'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -92,6 +98,7 @@ class ssh::params {
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
       $config_group      = '0'
+      $config_mode       = '0644'
       $root_access_group = 'wheel'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -125,6 +132,7 @@ class ssh::params {
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
       $config_group      = '0'
+      $config_mode       = '0644'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTH'
@@ -139,7 +147,7 @@ class ssh::params {
       $_programdata = $facts.dig('windows_env', 'PROGRAMDATA')
       $_windir = $facts.dig('windows_env', 'WINDIR')
 
-      if $facts['cygwin_home'] =~ String[1] {
+      if $cygwin {
         # Use Cygwin openssh
         $server_class      = 'ssh::server::cygwin'
         $package_provider  = 'cygwin'
@@ -171,6 +179,7 @@ class ssh::params {
       $has_restart       = false
       $config_owner      = 'Administrator'
       $config_group      = 'Administrators'
+      $config_mode       = undef # Use ACLs
       $root_access_group = 'Administrators'
       $syslog_facility   = 'AUTH'
       $print_motd        = true

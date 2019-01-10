@@ -33,12 +33,17 @@ class ssh::server::chocolatey (
     group  => 'NT AUTHORITY\SYSTEM',
   }
 
-  acl { $ssh::params::authorized_keys_dir:
-    purge                      => true,
-    inherit_parent_permissions => false,
-    permissions                => [
-      {'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full']},
-      {'identity' => 'Administrators', 'rights' => ['full']},
-    ],
+  acl {
+    default:
+      purge                      => true,
+      inherit_parent_permissions => false,
+      permissions                => [
+        {'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full']},
+        {'identity' => 'Administrators', 'rights' => ['full']},
+        {'identity' => 'Everyone', 'rights' => ['read']},
+      ],
+    ;
+    $ssh::params::sshd_config:;
+    $ssh::params::authorized_keys_dir:;
   }
 }

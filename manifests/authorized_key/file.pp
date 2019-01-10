@@ -30,7 +30,7 @@ define ssh::authorized_key::file (
     }
   }
 
-  if $ensure == 'present' or ($ensure == 'if_not_empty' and $lines.length() < 1) {
+  if $ensure == 'present' or ($ensure == 'if_not_empty' and $lines.length() > 0) {
     $content = @("END")
       # This file is managed by Puppet. Modifications will be overwritten.
       ${lines.sort().join("\n")}
