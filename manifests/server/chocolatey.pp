@@ -38,8 +38,8 @@ class ssh::server::chocolatey (
       purge                      => true,
       inherit_parent_permissions => false,
       permissions                => [
-        {'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full']},
         {'identity' => 'Administrators', 'rights' => ['full']},
+        {'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full']},
         {'identity' => 'Everyone', 'rights' => ['read']},
       ],
     ;

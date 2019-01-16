@@ -177,8 +177,8 @@ class ssh::params (
       $server_package    = $client_package
       $ssh_service       = 'sshd'
       $has_restart       = false
-      $config_owner      = 'Administrator'
-      $config_group      = 'Administrators'
+      $config_owner      = 'Administrators'
+      $config_group      = 'NT AUTHORITY\SYSTEM'
       $config_mode       = undef # Use ACLs
       $root_access_group = 'Administrators'
       $syslog_facility   = 'AUTH'
