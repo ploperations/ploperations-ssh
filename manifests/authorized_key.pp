@@ -15,9 +15,7 @@ define ssh::authorized_key (
   }
 
   if $use_file {
-    notify { "ssh::authorized_key ${title} use_file":
-      loglevel => warning,
-    }
+    ensure_resource('ssh::authorized_key::file', $user)
 
     if $ensure == present and $key {
       if $options.length() > 0 {
@@ -26,11 +24,12 @@ define ssh::authorized_key (
       } else {
         $prefix = ''
       }
+
+      Ssh::Authorized_key::File <| title == $user |> {
+        lines +> ["${prefix}${type} ${key} ${comment}"],
+      }
     }
   } else {
-    notify { "ssh::authorized_key ${title} native":
-    loglevel => warning,
-  }
     # ssh_authorized_key works on this platform
     ssh_authorized_key { $title:
       ensure  => $ensure,

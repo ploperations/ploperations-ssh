@@ -5,9 +5,6 @@ define ssh::authorized_key::file (
   Array[String[1]]                    $lines  = [],
 ) {
   include ssh::params
-  notify { "ssh::authorized_key::file ${title} ${user}: ${length($lines)}":
-    loglevel => warning,
-  }
 
   case $ssh::params::server_class {
     'ssh::server::chocolatey': {
@@ -33,15 +30,16 @@ define ssh::authorized_key::file (
     }
   }
 
+  notify { "ssh::authorized_key::file ${title}":
+    message => "ssh::authorized_key::file ${title} ${ensure}: ${lines.length()}\n${lines.join("\n")}",
+  }
+
   if $ensure == 'present' or ($ensure == 'if_not_empty' and $lines.length() > 0) {
     $content = @("END")
       # This file is managed by Puppet. Modifications will be overwritten.
       ${lines.sort().join("\n")}
       | END
 
-  notify { "ssh::authorized_key::file ${title} ${user} creating file":
-    loglevel => warning,
-  }
     file { $path:
       ensure  => 'file',
       owner   => $owner,
