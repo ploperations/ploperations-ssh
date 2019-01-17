@@ -13,12 +13,6 @@ class ssh::server (
 ) inherits ssh::params {
   include ssh
 
-  notify { "ssh::params::config_mode = ${ssh::params::config_mode}":
-    loglevel => warning,
-  }
-  notify { "ssh::server::config_mode = ${config_mode}":
-    loglevel => warning,
-  }
   if $ssh::params::server_class {
     include $ssh::params::server_class
   }
