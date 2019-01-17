@@ -34,16 +34,18 @@ class ssh::server (
       ensure => directory,
       owner  => $ssh::params::config_owner,
       group  => $ssh::params::config_group,
-      mode   => '0755',
+      mode   => $ssh::params::config_dir_mode,
       before => Concat['ssh::params::sshd_config'],
     }
   }
 
+  # Use $ssh::params::config_mode instead of $config_mode. This must be world
+  # readable, and $config_mode might not be.
   file { $ssh::params::known_hosts:
     ensure => file,
     owner  => $ssh::params::config_owner,
     group  => $ssh::params::config_group,
-    mode   => '0644',
+    mode   => $ssh::params::config_mode,
     notify => Service['sshd'],
   }
 

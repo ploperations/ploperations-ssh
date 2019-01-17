@@ -17,6 +17,7 @@ class ssh::params (
       $config_owner      = 'root'
       $config_group      = '0'
       $config_mode       = '0644'
+      $config_dir_mode   = '0755'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -38,6 +39,7 @@ class ssh::params (
       $config_owner      = 'root'
       $config_group      = '0'
       $config_mode       = '0644'
+      $config_dir_mode   = '0755'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -59,6 +61,7 @@ class ssh::params (
       $config_owner      = 'root'
       $config_group      = '0'
       $config_mode       = '0644'
+      $config_dir_mode   = '0755'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -80,6 +83,7 @@ class ssh::params (
       $config_owner      = 'root'
       $config_group      = '0'
       $config_mode       = '0644'
+      $config_dir_mode   = '0755'
       $root_access_group = 'wheel'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -99,6 +103,7 @@ class ssh::params (
       $config_owner      = 'root'
       $config_group      = '0'
       $config_mode       = '0644'
+      $config_dir_mode   = '0755'
       $root_access_group = 'wheel'
       $manage_config_dir = true
       $syslog_facility   = 'AUTHPRIV'
@@ -133,6 +138,7 @@ class ssh::params (
       $config_owner      = 'root'
       $config_group      = '0'
       $config_mode       = '0644'
+      $config_dir_mode   = '0755'
       $root_access_group = 'root'
       $manage_config_dir = true
       $syslog_facility   = 'AUTH'
@@ -180,6 +186,7 @@ class ssh::params (
       $config_owner      = 'Administrators'
       $config_group      = 'NT AUTHORITY\SYSTEM'
       $config_mode       = undef # Use ACLs
+      $config_dir_mode   = undef
       $root_access_group = 'Administrators'
       $syslog_facility   = 'AUTH'
       $print_motd        = true
