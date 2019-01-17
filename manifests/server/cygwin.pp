@@ -24,10 +24,11 @@ class ssh::server::cygwin {
 
   $password = $ssh::server::cyg_server_password.unwrap()
   $script = cygwin::windows_path('/bin/ssh-host-config')
+  $command = "bash.exe ${script} --yes --pwd '${password}'"
   ### FIXME node_encrypt::secret
   ### implepup 'resources { type = "Exec" and title ~ "^bash.exe " limit 1 }'
   exec { $script:
-    command     => "bash.exe ${script} --yes --pwd '${password}'",
+    command     => $command.node_encrypt::secret(),
     path        => $exec_path,
     logoutput   => true,
     creates     => cygwin::windows_path('/etc/ssh_host_rsa_key'),
