@@ -30,10 +30,6 @@ define ssh::authorized_key::file (
     }
   }
 
-  notify { "ssh::authorized_key::file ${title}":
-    message => "ssh::authorized_key::file ${title} ${ensure}: ${lines.length()}\n${lines.join("\n")}",
-  }
-
   if $ensure == 'present' or ($ensure == 'if_not_empty' and $lines.length() > 0) {
     $content = @("END")
       # This file is managed by Puppet. Modifications will be overwritten.
