@@ -5,7 +5,9 @@ define ssh::authorized_key::file (
   Array[String[1]]                    $lines  = [],
 ) {
   include ssh::params
-  notify { "ssh::authorized_key::file ${title} ${user}: ${length($lines)}": }
+  notify { "ssh::authorized_key::file ${title} ${user}: ${length($lines)}":
+    loglevel => warning,
+  }
 
   case $ssh::params::server_class {
     'ssh::server::chocolatey': {
@@ -37,7 +39,9 @@ define ssh::authorized_key::file (
       ${lines.sort().join("\n")}
       | END
 
-  notify { "ssh::authorized_key::file ${title} ${user} creating file": }
+  notify { "ssh::authorized_key::file ${title} ${user} creating file":
+    loglevel => warning,
+  }
     file { $path:
       ensure  => 'file',
       owner   => $owner,
