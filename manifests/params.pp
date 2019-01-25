@@ -152,8 +152,11 @@ class ssh::params (
       $dos_line_endings  = false
     }
     'windows': {
-      $_programdata = $facts.dig('windows_env', 'PROGRAMDATA')
-      $_windir = $facts.dig('windows_env', 'WINDIR')
+      # This fact doesn't exist during testing, and occasionally it doesn't have
+      # PROGRAMDATA (WTF).
+      $_windows_env = pick($facts['windows_env'], {})
+      $_programdata = pick($_windows_env['PROGRAMDATA'], 'C:\ProgramData')
+      $_windir = pick($_windows_env['WINDIR'], 'C:\Windows')
 
       if $cygwin {
         # Use Cygwin openssh
