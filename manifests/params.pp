@@ -117,13 +117,13 @@ class ssh::params (
       $dos_line_endings  = false
     }
     'Solaris','SunOS': {
-      case $::kernelrelease {
-        '5.10': {
+      case $facts['os']['release']['major'] {
+        '10': {
           $client_package = 'openssh'
           $server_package = 'openssh'
           $ssh_service    = 'svc:/network/cswopenssh:default'
         }
-        '5.11': {
+        '11': {
           $client_package = 'service/network/ssh'
           $server_package = 'service/network/ssh'
           $ssh_service    = 'network/ssh'
