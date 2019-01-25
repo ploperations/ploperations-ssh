@@ -1,0 +1,9 @@
+AcceptEnv LANG LC_CTYPE LC_NUMERIC LC_TIME LC_COLLATE LC_MONETARY LC_MESSAGES
+AcceptEnv LC_IDENTIFICATION LC_ALL
+AcceptEnv LC_PAPER LC_NAME LC_ADDRESS LC_TELEPHONE LC_MEASUREMENT
+ChallengeResponseAuthentication yes
+GSSAPICleanupCredentials yes
+RhostsRSAAuthentication no
+RSAAuthentication no
+UsePAM yes
+UsePrivilegeSeparation yes
