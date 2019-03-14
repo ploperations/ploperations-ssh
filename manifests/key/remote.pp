@@ -14,7 +14,10 @@ define ssh::key::remote (
   String[1] $key_name = $user,
   Optional[Array[String[1], 1]] $options = undef,
 ) {
-  $nodes = query_nodes("certname='${certname}'", "ssh_public_key_${key_name}_rsa")
+  $nodes = puppetdb_query("facts[certname,value] {
+    certname='${certname}' and
+    name = 'ssh_public_key_${key_name}_rsa'
+  }").map |$value| { $value["value"] }
   if $nodes.size() > 1 {
     fail("Found more than one ssh_public_key_${key_name}_rsa for certname='${certname}'")
   }
