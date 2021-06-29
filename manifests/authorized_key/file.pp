@@ -48,9 +48,9 @@ define ssh::authorized_key::file (
         purge                      => true,
         inherit_parent_permissions => false,
         permissions                => [
-          {'identity' => $group, 'rights' => ['full']},
-          {'identity' => $owner, 'rights' => ['full']},
-          {'identity' => $user,  'rights' => ['full']},
+          { 'identity' => $group, 'rights' => ['full'] },
+          { 'identity' => $owner, 'rights' => ['full'] },
+          { 'identity' => $user,  'rights' => ['full'] },
         ],
       }
     }

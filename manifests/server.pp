@@ -29,9 +29,11 @@ class ssh::server (
   }
 
   if $ssh::params::server_package {
-    ensure_packages([$ssh::params::server_package], {
-      provider => $ssh::params::package_provider,
-    })
+    ensure_packages([$ssh::params::server_package],
+      {
+        provider => $ssh::params::package_provider,
+      }
+    )
 
     Package[$ssh::params::server_package] ~> Service['sshd']
 
@@ -69,18 +71,22 @@ class ssh::server (
     notify         => Service['sshd'],
   }
 
-  $sshd_configuration = ssh::fix_eol(epp('ssh/sshd_config.epp', {
-    accept_env            => $accept_env,
-    authorized_keys       => $ssh::params::authorized_keys,
-    kex_algorithm         => $kex_algorithm,
-    permit_root_login     => $permit_root_login,
-    permit_x11_forwarding => $permit_x11_forwarding,
-    print_motd            => $print_motd,
-    root_group            => $ssh::params::root_access_group,
-    sftp_subsystem        => $ssh::params::sftp_subsystem,
-    strict_modes          => $ssh::params::strict_modes,
-    syslog_facility       => $ssh::params::syslog_facility,
-  }))
+  $sshd_configuration = ssh::fix_eol(
+    epp('ssh/sshd_config.epp',
+      {
+        accept_env            => $accept_env,
+        authorized_keys       => $ssh::params::authorized_keys,
+        kex_algorithm         => $kex_algorithm,
+        permit_root_login     => $permit_root_login,
+        permit_x11_forwarding => $permit_x11_forwarding,
+        print_motd            => $print_motd,
+        root_group            => $ssh::params::root_access_group,
+        sftp_subsystem        => $ssh::params::sftp_subsystem,
+        strict_modes          => $ssh::params::strict_modes,
+        syslog_facility       => $ssh::params::syslog_facility,
+      }
+    )
+  )
 
   # Add a trailing newline for legibility.
   concat::fragment { 'ssh::params::sshd_config header':

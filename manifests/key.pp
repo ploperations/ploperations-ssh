@@ -25,9 +25,9 @@ define ssh::key (
   $escaped_fact_path = shellquote("/opt/puppetlabs/facter/facts.d/${fact_name}.txt")
 
   if $user == $name {
-    $escaped_comment = shellquote("${user}@${facts['fqdn']}")
+    $escaped_comment = shellquote("${user}@${facts['networking']['fqdn']}")
   } else {
-    $escaped_comment = shellquote("${name}: ${user}@${facts['fqdn']}")
+    $escaped_comment = shellquote("${name}: ${user}@${facts['networking']['fqdn']}")
   }
 
   exec { "ssh-keygen -t rsa -b 4096 -N '' -f ${key_path} -C ${escaped_comment}":

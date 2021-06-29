@@ -16,9 +16,13 @@ define ssh::key::collector (
   Array[String[1], 1] $users = [$name],
   Optional[Array[String[1], 1]] $options = undef,
 ) {
-  $public_keys = unique(query_nodes(
-    "Ssh::Key::Marker['${key_name} to ${facts['fqdn']}']",
-    "ssh_public_key_${key_name}_rsa"))
+  $public_keys = unique(
+    query_nodes(
+      "Ssh::Key::Marker['${key_name} to ${facts['networking']['fqdn']}']",
+      "ssh_public_key_${key_name}_rsa"
+    )
+  )
+
   $public_keys.each |$public_key| {
     [$key_type, $key, $comment] = $public_key.split(' ')
 
