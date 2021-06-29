@@ -1,4 +1,14 @@
 # @summary Platform independent way to specify an SSH authorized key
+#
+# @param [String[1]] user The user account in which the SSH key should be installed.
+#
+# @param [Enum[present, absent]] ensure The ensure value for the ssh authorized key resource.
+#
+# @param [Optional[Ssh::Key::String]] key The public key itself.
+#
+# @param [Ssh::Key::Type] type The encryption type used.
+#
+# @param [Array[Ssh::Key::Option]] options Key options; see sshd(8) for possible values.
 define ssh::authorized_key (
   String[1]                  $user    = $title,
   Enum[present, absent]      $ensure  = 'present',
@@ -20,7 +30,7 @@ define ssh::authorized_key (
         $options_string = $options.join(',')
         $prefix = "${options_string} "
       } else {
-        $prefix = ''
+        $prefix = undef
       }
 
       $line = "${prefix}${type} ${key} ${title}"

@@ -6,9 +6,11 @@
 #
 # See ssh::key::remote for a more secure option.
 #
-# $key_name - The name of the ssh::key resource. Defaults to $name.
-# $users    - Users to add the key to. Defaults to [$name].
-# $options  - Options to pass to ssh_authorized_key.
+# @param [String[1]] key_name The name of the ssh::key resource. Defaults to $name.
+#
+# @param [Array[String[1], 1]] users Users to add the key to. Defaults to [$name].
+#
+# @param [Optional[Array[String[1], 1]]] options Options to pass to ssh_authorized_key.
 define ssh::key::collector (
   String[1] $key_name = $name,
   Array[String[1], 1] $users = [$name],

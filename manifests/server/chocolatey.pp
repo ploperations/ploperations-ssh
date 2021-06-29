@@ -1,4 +1,10 @@
 # Windows native OpenSSH server
+#
+# @param [Enum[present, absent]] default_shell_ensure The ensure option for a default shell.
+#
+# @param [Stdlib::Absolutepath] default_shell The default shell to use.
+#
+# @param [String] default_shell_command_option Options to pass to the default shell.
 class ssh::server::chocolatey (
   Enum[present, absent] $default_shell_ensure         = present,
   Stdlib::Absolutepath  $default_shell                = $ssh::params::default_shell,

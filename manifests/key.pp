@@ -4,6 +4,14 @@
 #
 # If you specify $target_query, you will be able to add the corresponding
 # public key on hosts matching $target_query with ::ssh::key::collector.
+#
+# @param [String[1]] user The account to generate an ssh key pair for.
+#
+# @param [Pattern[/^\//]] key_path The location of the ssh private key.
+#
+# @param [Optional[String[1]]] target_query The query used to gather targets used for ssh::key::marker and known_hosts, if applicable.
+#
+# @param [Boolean] manage_known_hosts Whether to manage the known_hosts file.
 define ssh::key (
   String[1] $user = $name,
   Pattern[/^\//] $key_path = "/home/${user}/.ssh/id_rsa",

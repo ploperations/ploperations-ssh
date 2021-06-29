@@ -2,6 +2,7 @@
 #
 # Sets varables for the SSH class
 #
+# @param [Boolean] cygwin Whether to use cygwin as the OpenSSH provider.
 class ssh::params (
   Boolean $cygwin = lookup('cygwin::enable', Boolean, undef, false),
 ) {

@@ -1,4 +1,8 @@
 # Sets up a chroot for a given group
+#
+# @param [String[1]] group The group used to setup a chroot environment.
+#
+# @param [Boolean] tcp_forwarding Whether TCP forwarding is permitted.
 define ssh::chrootgroup (
   String[1] $group          = $title,
   Boolean   $tcp_forwarding = false,

@@ -1,7 +1,18 @@
 # This class installs and manages an SSH server
 #
-# $cyg_server_password is only required on Cygwin. It's the password for the
-# ssh daemon user.
+# @param [Boolean] print_motd Whether the ssh daemon should print the contents of the /etc/motd file when a user logs in interactively.
+#
+# @param [Boolean] permit_x11_forwarding Whether X11 forwarding should be enabled or not.
+#
+# @param [Array[String[1]]] accept_env An array of environment variables to be accepted that will be copied into the session's environment.
+#
+# @param [Optional[String[1]]] kex_algorithm The available KEX (Key Exchange) algorithms to accept.
+#
+# @param [Ssh::PermitRootLogin] permit_root_login Whether root can log in using ssh.
+#
+# @param [Optional[Sensitive[String[1]]]] cyg_server_password Only required on Cygwin. It's the password for the ssh daemon user.
+#
+# @param [Optional[String[3]]] config_mode The file mode to set for the ssh config file.
 class ssh::server (
   Boolean                        $print_motd            = $ssh::params::print_motd,
   Boolean                        $permit_x11_forwarding = false,
