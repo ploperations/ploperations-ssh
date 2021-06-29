@@ -1,6 +1,12 @@
 # @summary Manage the authorized_keys file
 #
 # This is only used on systems where ssh_authorized_key doesn't work.
+#
+# @param [Enum[present, absent]] ensure The ensure value for the ssh authorized key file.
+#
+# @param [String[1]] user The target user's authorized key file to manage and file owner permission to set.
+#
+# @param [String[1]] group The group permissions of the authorized key file.
 define ssh::authorized_key::file (
   Enum[present, absent] $ensure = 'present',
   String[1]             $user   = $title,
@@ -42,9 +48,9 @@ define ssh::authorized_key::file (
         purge                      => true,
         inherit_parent_permissions => false,
         permissions                => [
-          {'identity' => $group, 'rights' => ['full']},
-          {'identity' => $owner, 'rights' => ['full']},
-          {'identity' => $user,  'rights' => ['full']},
+          { 'identity' => $group, 'rights' => ['full'] },
+          { 'identity' => $owner, 'rights' => ['full'] },
+          { 'identity' => $user,  'rights' => ['full'] },
         ],
       }
     }

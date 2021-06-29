@@ -4,6 +4,14 @@
 #
 # If you specify $target_query, you will be able to add the corresponding
 # public key on hosts matching $target_query with ::ssh::key::collector.
+#
+# @param [String[1]] user The account to generate an ssh key pair for.
+#
+# @param [Pattern[/^\//]] key_path The location of the ssh private key.
+#
+# @param [Optional[String[1]]] target_query The query used to gather targets used for ssh::key::marker and known_hosts, if applicable.
+#
+# @param [Boolean] manage_known_hosts Whether to manage the known_hosts file.
 define ssh::key (
   String[1] $user = $name,
   Pattern[/^\//] $key_path = "/home/${user}/.ssh/id_rsa",
@@ -17,9 +25,9 @@ define ssh::key (
   $escaped_fact_path = shellquote("/opt/puppetlabs/facter/facts.d/${fact_name}.txt")
 
   if $user == $name {
-    $escaped_comment = shellquote("${user}@${facts['fqdn']}")
+    $escaped_comment = shellquote("${user}@${facts['networking']['fqdn']}")
   } else {
-    $escaped_comment = shellquote("${name}: ${user}@${facts['fqdn']}")
+    $escaped_comment = shellquote("${name}: ${user}@${facts['networking']['fqdn']}")
   }
 
   exec { "ssh-keygen -t rsa -b 4096 -N '' -f ${key_path} -C ${escaped_comment}":

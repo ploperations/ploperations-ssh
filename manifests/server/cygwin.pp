@@ -7,9 +7,9 @@ class ssh::server::cygwin {
     purge                      => true,
     inherit_parent_permissions => false,
     permissions                => [
-      {'identity' => 'Administrators', 'rights' => ['full']},
-      {'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full']},
-      {'identity' => 'Everyone', 'rights' => ['read']},
+      { 'identity' => 'Administrators', 'rights' => ['full'] },
+      { 'identity' => 'NT AUTHORITY\SYSTEM', 'rights' => ['full'] },
+      { 'identity' => 'Everyone', 'rights' => ['read'] },
     ],
   }
 
