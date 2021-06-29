@@ -1,0 +1,4 @@
+---
+ssh::client_package: 'openssh'
+ssh::server_package: 'openssh'
+ssh::ssh_service: 'svc:/network/cswopenssh:default'

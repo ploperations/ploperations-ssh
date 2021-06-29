@@ -1,0 +1,18 @@
+---
+ssh::authorized_keys: '.ssh/authorized_keys'
+ssh::config_dir_mode: '0755'
+ssh::config_dir: '/etc/ssh'
+ssh::config_group: '0'
+ssh::config_mode: '0644'
+ssh::config_owner: 'root'
+ssh::dos_line_endings: false
+ssh::has_restart: true
+ssh::manage_config_dir: true
+ssh::package_provider: undef # Use default
+ssh::permit_root_login: false
+ssh::print_motd: false
+ssh::root_access_group: 'root'
+ssh::server_class: 'ssh::server::solaris'
+ssh::sftp_subsystem: 'internal-sftp'
+ssh::strict_modes: true
+ssh::syslog_facility: 'AUTH'

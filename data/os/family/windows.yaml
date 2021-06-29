@@ -1,0 +1,13 @@
+---
+ssh::client_package: 'openssh'
+ssh::config_dir_mode: undef
+ssh::config_group: 'NT AUTHORITY\SYSTEM'
+ssh::config_mode: undef # Use ACLs
+ssh::config_owner: 'Administrators'
+ssh::has_restart: false
+ssh::permit_root_login: true
+ssh::print_motd: true
+ssh::root_access_group: 'Administrators'
+ssh::server_package: "%{hiera(ssh::client_package)}"
+ssh::ssh_service: 'sshd'
+ssh::syslog_facility: 'AUTH'

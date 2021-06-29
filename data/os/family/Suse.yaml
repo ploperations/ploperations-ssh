@@ -1,0 +1,21 @@
+---
+ssh::server_class: 'ssh::server::linux'
+ssh::client_package: 'openssh'
+ssh::server_package: 'openssh'
+ssh::package_provider: undef # Use default
+ssh::ssh_service: 'sshd'
+ssh::has_restart: true
+ssh::config_dir: '/etc/ssh'
+ssh::config_owner: 'root'
+ssh::config_group: '0'
+ssh::config_mode: '0644'
+ssh::config_dir_mode: '0755'
+ssh::root_access_group: 'root'
+ssh::manage_config_dir: true
+ssh::syslog_facility: 'AUTHPRIV'
+ssh::sftp_subsystem: 'internal-sftp'
+ssh::authorized_keys: '.ssh/authorized_keys'
+ssh::strict_modes: true
+ssh::print_motd: true
+ssh::permit_root_login: false
+ssh::dos_line_endings: false

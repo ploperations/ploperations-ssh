@@ -1,0 +1,4 @@
+---
+ssh::known_hosts: "%{hiera(ssh::config_dir)}/ssh_known_hosts"
+ssh::ssh_config: "%{hiera(ssh::config_dir)}/ssh_config"
+ssh::sshd_config: "%{hiera(ssh::config_dir)}/sshd_config"

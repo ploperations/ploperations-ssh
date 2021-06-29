@@ -1,0 +1,4 @@
+---
+ssh::client_package: 'network/ssh'
+ssh::server_package: 'network/ssh'
+ssh::ssh_service: 'network/ssh'
