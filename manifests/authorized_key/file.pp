@@ -47,11 +47,12 @@ define ssh::authorized_key::file (
       acl { $path:
         purge                      => true,
         inherit_parent_permissions => false,
-        permissions                => [
-          { 'identity' => $group, 'rights' => ['full'] },
-          { 'identity' => $owner, 'rights' => ['full'] },
-          { 'identity' => $user,  'rights' => ['full'] },
-        ],
+        permissions                => unique([
+            { 'identity' => $group, 'rights' => ['full'] },
+            { 'identity' => $owner, 'rights' => ['full'] },
+            { 'identity' => $user, 'rights' => ['full'] },
+          ],
+        ),
       }
     }
   } else {
