@@ -7,21 +7,12 @@
 # @param [String[1]] user The target user's authorized key file to manage and file owner permission to set.
 #
 # @param [String[1]] group The group permissions of the authorized key file.
-#
-# @param [Optional[String[3]]] mode The file mode to set for the ssh authorized key file.
 define ssh::authorized_key::file (
   Enum[present, absent] $ensure = 'present',
   String[1]             $user   = $title,
   String[1]             $group  = 'NT AUTHORITY\SYSTEM',
-  Optional[String[3]]   $mode   = undef,
 ) {
   include ssh::params
-
-  if $mode {
-    $_mode = $mode
-  } else {
-    $_mode = $ssh::params::config_mode
-  }
 
   case $ssh::params::server_class {
     'ssh::server::chocolatey': {
@@ -40,7 +31,7 @@ define ssh::authorized_key::file (
   if $ensure == 'present' {
     concat { "ssh::authorized_key::file ${title}":
       path           => $path,
-      mode           => $_mode,
+      mode           => '0640',
       ensure_newline => false, # probably want CRLF instead of LF
     }
 
@@ -59,9 +50,8 @@ define ssh::authorized_key::file (
         group                      => $group,
         permissions                => unique([
             { 'identity' => $group, 'rights' => ['full'] },
-            { 'identity' => $owner, 'rights' => ['full'] },
-            { 'identity' => $user, 'rights' => ['full'] },
-            { 'identity' => 'Everyone', 'rights' => ['read'] },
+            { 'identity' => $owner, 'rights' => ['mask_specific'], 'mask' => '2032031' },
+            { 'identity' => $user, 'rights'  => ['full'] },
           ],
         ),
       }
