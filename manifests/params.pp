@@ -191,8 +191,8 @@ class ssh::params (
       $has_restart       = false
       $config_owner      = 'Administrators'
       $config_group      = 'NT AUTHORITY\SYSTEM'
-      $config_mode       = undef # Use ACLs
-      $config_dir_mode   = undef
+      $config_mode       = '0774'
+      $config_dir_mode   = '0774'
       $root_access_group = 'Administrators'
       $syslog_facility   = 'AUTH'
       $print_motd        = true
