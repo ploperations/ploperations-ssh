@@ -279,6 +279,7 @@ The following parameters are available in the `ssh::authorized_key::file` define
 * [`ensure`](#ensure)
 * [`user`](#user)
 * [`group`](#group)
+* [`mode`](#mode)
 
 ##### <a name="ensure"></a>`ensure`
 
@@ -303,6 +304,14 @@ Data type: `String[1]`
 The group permissions of the authorized key file.
 
 Default value: `'NT AUTHORITY\SYSTEM'`
+
+##### <a name="mode"></a>`mode`
+
+Data type: `Optional[String[3]]`
+
+The file mode to set for the ssh authorized key file.
+
+Default value: `$ssh::params::config_mode`
 
 ### <a name="sshchrootgroup"></a>`ssh::chrootgroup`
 
