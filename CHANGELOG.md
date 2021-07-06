@@ -2,9 +2,9 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [0.9.0](https://github.com/ploperations/ploperations-ssh/tree/0.9.0) (2021-06-29)
+## [0.10.0](https://github.com/ploperations/ploperations-ssh/tree/0.10.0) (2021-07-06)
 
-[Full Changelog](https://github.com/ploperations/ploperations-ssh/compare/0.9.0...0.9.0)
+[Full Changelog](https://github.com/ploperations/ploperations-ssh/compare/0.9.0...0.10.0)
 
 ### Added
 
@@ -12,6 +12,9 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
+- Fixed authorized key permissions [\#22](https://github.com/ploperations/ploperations-ssh/pull/22) ([yachub](https://github.com/yachub))
+- Fix duplicate acl properties and file permissions [\#21](https://github.com/ploperations/ploperations-ssh/pull/21) ([yachub](https://github.com/yachub))
+- \(INFC-18852\) update solaris pkg name [\#14](https://github.com/ploperations/ploperations-ssh/pull/14) ([suckatrash](https://github.com/suckatrash))
 - \(maint\) update to use native pdb query [\#12](https://github.com/ploperations/ploperations-ssh/pull/12) ([heathseals](https://github.com/heathseals))
 
 ## [0.9.0](https://github.com/ploperations/ploperations-ssh/tree/0.9.0) (2019-01-25)

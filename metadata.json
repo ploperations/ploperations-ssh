@@ -1,6 +1,6 @@
 {
   "name": "ploperations-ssh",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "author": "ploperations",
   "summary": "Manage OpenSSH server and client",
   "license": "Apache-2.0",
