@@ -139,7 +139,7 @@ class ssh::params (
       $has_restart       = true
       $config_dir        = '/etc/ssh'
       $config_owner      = 'root'
-      $config_group      = '0'
+      $config_group      = 'sys'
       $config_mode       = '0644'
       $config_dir_mode   = '0755'
       $root_access_group = 'root'
