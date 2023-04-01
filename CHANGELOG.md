@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [1.0.1](https://github.com/ploperations/ploperations-ssh/tree/1.0.1) (2023-04-01)
+
+[Full Changelog](https://github.com/ploperations/ploperations-ssh/compare/1.0.0...1.0.1)
+
+### Fixed
+
+- Fix solaris owner and host key types [\#29](https://github.com/ploperations/ploperations-ssh/pull/29) ([yachub](https://github.com/yachub))
+
 ## [1.0.0](https://github.com/ploperations/ploperations-ssh/tree/1.0.0) (2021-09-18)
 
 [Full Changelog](https://github.com/ploperations/ploperations-ssh/compare/0.10.0...1.0.0)
