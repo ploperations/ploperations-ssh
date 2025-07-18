@@ -6,8 +6,8 @@
 class ssh::params (
   Boolean $cygwin = lookup('cygwin::enable', Boolean, undef, false),
 ) {
-  case $facts['os']['name'] {
-    'AlmaLinux', 'CentOS', 'RedHat', 'Fedora': {
+  case downcase($facts['os']['name']) {
+    'amazon', 'almalinux', 'centos', 'redhat', 'fedora': {
       $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh-clients'
       $server_package    = 'openssh-server'
@@ -29,7 +29,7 @@ class ssh::params (
       $permit_root_login = false
       $dos_line_endings  = false
     }
-    'SLES': {
+    'sles': {
       $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh'
       $server_package    = 'openssh'
@@ -51,7 +51,7 @@ class ssh::params (
       $permit_root_login = false
       $dos_line_endings  = false
     }
-    'CumulusLinux', 'Debian', 'Ubuntu': {
+    'cumuluslinux', 'debian', 'ubuntu': {
       $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh-client'
       $server_package    = 'openssh-server'
@@ -73,7 +73,7 @@ class ssh::params (
       $permit_root_login = false
       $dos_line_endings  = false
     }
-    'Darwin': {
+    'darwin': {
       $server_class      = undef
       $client_package    = undef
       $server_package    = undef
@@ -95,7 +95,7 @@ class ssh::params (
       $permit_root_login = false
       $dos_line_endings  = false
     }
-    'FreeBSD': {
+    'freebsd': {
       $server_class      = undef
       $package_provider  = undef # Use default
       $client_package    = 'openssh-portable'
@@ -117,7 +117,7 @@ class ssh::params (
       $permit_root_login = false
       $dos_line_endings  = false
     }
-    'Solaris','SunOS': {
+    'solaris', 'sunos': {
       case $facts['os']['release']['major'] {
         '10': {
           $client_package = 'openssh'
@@ -153,24 +153,20 @@ class ssh::params (
       $dos_line_endings  = false
     }
     'windows': {
-      # This fact doesn't exist during testing, and occasionally it doesn't have
-      # PROGRAMDATA (WTF).
       $_windows_env = pick($facts['windows_env'], {})
       $_programdata = pick($_windows_env['PROGRAMDATA'], 'C:\ProgramData')
       $_windir = pick($_windows_env['WINDIR'], 'C:\Windows')
 
       if $cygwin {
-        # Use Cygwin openssh
         $server_class      = 'ssh::server::cygwin'
         $package_provider  = 'cygwin'
         $config_dir        = cygwin::windows_path('/etc')
         $manage_config_dir = false
         $sftp_subsystem    = '/usr/bin/sftp-server'
         $authorized_keys   = '.ssh/authorized_keys'
-        $strict_modes      = false # I couldn't figure these out
+        $strict_modes      = false
         $dos_line_endings  = false
       } else {
-        # Use native openssh
         $server_class        = 'ssh::server::chocolatey'
         $package_provider    = 'chocolatey'
         $config_dir          = "${_programdata}\\ssh"
@@ -179,8 +175,6 @@ class ssh::params (
         $authorized_keys     = "${config_dir}\\user_authorized_keys\\%u"
         $strict_modes        = true
         $dos_line_endings    = true
-
-        # Settings special to this platform
         $default_shell       = "${_windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
         $authorized_keys_dir = "${config_dir}\\user_authorized_keys"
       }
