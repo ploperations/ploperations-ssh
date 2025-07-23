@@ -7,7 +7,7 @@ class ssh::params (
   Boolean $cygwin = lookup('cygwin::enable', Boolean, undef, false),
 ) {
   case $facts['os']['name'] {
-    'AlmaLinux', 'CentOS', 'RedHat', 'Fedora': {
+    'AlmaLinux', 'Amazon', 'CentOS', 'RedHat', 'Fedora': {
       $server_class      = 'ssh::server::linux'
       $client_package    = 'openssh-clients'
       $server_package    = 'openssh-server'
